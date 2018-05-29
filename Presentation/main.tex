@@ -1,0 +1,508 @@
+\documentclass[table,fleqn]{beamer}[10]
+\usepackage{pgf}
+%\usepackage[danish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{beamerthemesplit}
+\usepackage{graphics,epsfig, subfigure}
+\usepackage{url}
+\usepackage{srcltx}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts} 
+
+\definecolor{kugreen}{RGB}{50,93,61}
+\definecolor{kugreenlys}{RGB}{132,158,139}
+\definecolor{kugreenlyslys}{RGB}{173,190,177}
+\definecolor{kugreenlyslyslys}{RGB}{214,223,216}
+
+\setbeamercovered{transparent}
+\mode<presentation>
+\usetheme[numbers,totalnumber,compress,sidebarshades]{PaloAlto}
+\setbeamertemplate{footline}[frame number]
+
+  \usecolortheme[named=kugreen]{structure}
+  \useinnertheme{circles}
+  \usefonttheme[onlymath]{serif}
+  \setbeamercovered{transparent}
+  \setbeamertemplate{blocks}[rounded][shadow=true]
+  \useoutertheme{infolines} 
+  
+  \makeatletter
+  \setbeamertemplate{sidebar \beamer@sidebarside}%{sidebar theme}
+  {
+    \beamer@tempdim=\beamer@sidebarwidth%
+    \advance\beamer@tempdim by -6pt%
+    \insertverticalnavigation{\beamer@sidebarwidth}%
+    \vfill
+    \ifx\beamer@sidebarside\beamer@lefttext%
+    \else%
+      \usebeamercolor{normal text}%
+      \llap{\usebeamertemplate***{navigation symbols}\hskip0.1cm}%
+      \vskip2pt%
+    \fi%
+  }%
+\makeatother
+
+\makeatother
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=1.0\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot} \hspace*{3em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatletter
+
+\logo{\includegraphics[width=1.0cm]{Tlogo}}
+\title{Simultaneous Neural Machine Translation}
+\author{Ashkan Alinejad \\ \vspace{0.5cm} Supervisor: Anoop Sarkar}
+\institute{Simon Fraser University}
+\date{October 2017}
+
+
+
+\begin{document}
+\frame{\titlepage \vspace{-0.5cm}
+}
+
+\frame
+{
+\frametitle{Overview}
+\tableofcontents%[pausesection]
+}
+
+%===================================================================================
+\section{Neural Machine Translation}
+
+%\frame{
+%\begin{center}
+%\Huge Neural Machine Translation
+%\end{center}
+%}
+
+\subsection{RNN Encoder-Decoder}
+
+\frame{
+\textbf{What is NMT?}
+\begin{itemize}
+    \item The approach of solving the problem of machine translation using one huge Neural Network.
+    \item the most common approach is encoder-decoder model.
+\end{itemize}
+}
+
+\frame{
+\textbf{Encoder-Decoder Structure}
+\includegraphics[scale=0.09]{./images/EncDec0}
+}
+
+\frame{
+\textbf{Encoder-Decoder Structure}
+\includegraphics[scale=0.09]{./images/EncDec1}
+}
+
+\frame{
+\textbf{Encoder-Decoder Structure}
+\includegraphics[scale=0.09]{./images/EncDec2}
+}
+
+\subsection{Attention Mechanism}
+\frame{
+\textbf{Attention Mechanism}
+\begin{itemize}
+    \item We are conditioning over one fixed-dimensional context vector
+    \item Works good on short sentences but not on the long ones.
+    \item Attention mechanism tries to solve it.
+\end{itemize}
+}
+
+\frame{
+\textbf{Attention Mechanism}
+\includegraphics[scale=0.085]{./images/EncDec3}
+}
+
+\frame{
+\textbf{Attention Mechanism}
+%\vspace{5mm}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.25]{./images/Attention} \\ [-1ex]
+    {\tiny Source: Luong et al.\cite{luong:2015:EMNLP}}
+    %\caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+}
+
+%===================================================================================
+\section{Simultaneous NMT}
+
+%\frame{
+%\begin{center}
+%\Huge Simultaneous NMT
+%\end{center}
+%}
+
+%\frame{
+%http://www.systransoft.com/systran/translation-technology/what-is-machine-translation/
+%\begin{itemize}
+%\item Machine Translation is the process by which computer software is used to translate a text from %one natural language (such as English) to another (such as Spanish).
+%\item Three main methods:
+%\begin{enumerate}
+%\item Rule-Based Machine Translation.
+%\item Statistical Machine Translation.
+%\item Neural Machine Translation.
+%\end{enumerate}
+%\end{itemize}
+%
+
+\frame{
+\frametitle{SMT}
+\textbf{Simultaneous NMT}
+\begin{itemize}
+\item Simultaneous Machine Translation is a challenging task of reading from the source language and at the same time, producing the target translation.
+\item The objective of translation system is defined as a combination of quality and delay. 
+\end{itemize}
+}
+
+\frame{
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.048]{./images/NMTvsSNMT} \\[-1ex]
+    {\tiny Source: Gu et al. \cite{gu:2017:EACL}}
+    %\caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+}
+
+\frame{
+\textbf{Previous works}
+\begin{itemize}
+\item Most of the works in this direction are done in the context of speech translation. Incoming speech is transcribed and segmented into a translation unit largely based on acoustic and linguistic cues.
+\item Each of these segments is then translated largely independent from each other
+\end{itemize}
+}
+
+\frame{
+\textbf{Metrics}
+\begin{itemize}
+\item \textbf{Quality} The metrics for evaluating quality of the translation is the BLEU score.
+\item \textbf{Delay}
+$s(t) = $ In each time step for the decoded target symbol $\hat{y}_t$, how many source symbols were required.\\
+
+delay in translation $\mathfrak(T)$:
+
+$$ 0 < T(X, \hat{Y}) = \frac{1}{|X||\hat{Y}|} \sum^{|\hat{y}|}_{t=1} s(t) \leq 1. $$
+
+\end{itemize}
+}
+
+\subsection{Greedy Decoding}
+\frame{
+\textbf{Simultaneous Greedy Decoding}
+\vspace{5mm}
+\begin{itemize}
+\item Sequentially making two interleaved decisions:
+\begin{enumerate}
+
+\item READ
+
+\item WRITE
+\end{enumerate}
+
+\item 
+\begin{equation*}
+\begin{aligned}
+\text{Input sequence} & \ \ \  X = \{ x_1, \dots, x_{T_s} \} \\
+\text{Decoded Output} & \ \ \ Y = \{ y_1, \dots, y_{T_t} \} \\
+\text{Action sequence} & \ \ \  A = \{ a_1, \dots, a_{T} \} \\
+\vspace{10cm} \\
+T &= T_s + T_t
+\phantom{\hspace{0cm}}
+\end{aligned}
+\end{equation*}
+
+\item The model structure is an attention-based neural network
+
+\end{itemize}
+}
+
+\frame{
+\textbf{SGD Structure}
+\includegraphics[scale=0.085]{./images/SGDStructure.jpg}
+}
+
+\frame{
+\centering
+\includegraphics[scale=0.32]{./images/GD}
+}
+
+\frame{
+\begin{itemize}
+\item \textbf{Wait-If-Worse} 
+
+\begin{equation*}
+\begin{aligned}
+\Lambda (C, C \cup C') \ : &\ (\log p(\hat{y} | \hat{y}_{< t}, C) \\
+                                          & > \log p( \hat{y} | \hat{y}_{< t}, C \cup C' )), \\      
+\vspace{10cm} \\                              
+\text{where} \ \ \hat{y} = \arg \max_{y} p(y | \hat{y}_{< t}, C)
+\phantom{\hspace{0cm}}
+\end{aligned}
+\end{equation*}
+
+\item \textbf{Wait-If-Diff}
+
+\begin{equation*}
+\begin{aligned}
+\Lambda (C, C \cup C') : (\hat{y} \neq \hat{y}'),\\
+\vspace{10cm} \\   
+\text{where} \ \ \hat{y}' = \arg \max_y \log p(y | \hat{y}_{< t}, C \cup C').
+\phantom{\hspace{0cm}}
+\end{aligned}
+\end{equation*}
+
+\end{itemize}
+}
+
+\frame{
+\centering
+\includegraphics[scale=0.32]{./images/Minister1}
+}
+
+\frame{
+\centering
+\includegraphics[scale=0.32]{./images/Minister2}
+}
+
+\frame{
+\centering
+\includegraphics[scale=0.32]{./images/Minister3}
+}
+
+\frame{
+\centering
+\includegraphics[scale=0.32]{./images/Minister4}
+}
+
+\frame{
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.07]{./images/WIWWID2} \\[-1ex]
+    {\raggedleft \tiny Source: Cho et al.\cite{cho:2016:Arxive}}
+    \caption{From English:"\textit{Active monitoring will be suggested, and if the disease progresses, they will be offered treatment.}"}
+    \label{fig:my_label}
+\end{figure}
+}
+
+\frame{
+\begin{figure}
+\centering
+\includegraphics[scale=0.25]{./images/BLEU1}
+\caption{BLEU scores on the test set (newstest-2015) obtained by the models used in the paper and Baseline from (Firat et al., 2016). Although our models use a unidirectional recurrent net as an encoder, the translation qualities are comparable.}
+\end{figure}
+}
+
+\frame{
+\textbf{Discussion}
+\begin{enumerate}
+\item They do not have good BLEU score compared to previous works.
+\item the waiting criteria proposed in this paper are both manually designed and does not exploit rich information embedded in the hidden representation learned by the recurrent neural networks.
+\item The objective of the network is to improve translation quality and do not consider delay during training.
+\end{enumerate}
+}
+
+\subsection{Trainable Agent}
+\frame{
+\textbf{Trainable Agent}
+\begin{itemize}
+\item The idea is to have a separate trainable agent
+\item The framework can be trained using reinforcement learning and it considers both Quality and Delay during training.
+\end{itemize}
+\begin{figure}[!b]
+\centering
+\includegraphics[scale=0.20]{./images/TA} \\[-1ex]
+{\tiny Source: Gu et al. \cite{gu:2017:EACL}}
+\end{figure}
+}
+
+\frame{
+\centering
+\includegraphics[scale=0.33]{./images/SGD}
+}
+
+\frame{
+\textbf{Agent} \\
+A trainable agent is designed to make decisions $A = \{a_1, \dots, a_T \}$, $a_t \in \mathcal{A}$ sequentially based on observations $O = \{o_1, \dots, o_T \}$, $o_t \in \mathcal{O}$.\\
+\begin{itemize}
+\item \textbf{Observation: }  $o_{\tau + \eta} = [c_{\tau}^{\eta};z_{\tau}^{\eta};E(y_{\tau}^{\eta})]$
+\item \textbf{Action: }
+\begin{itemize}
+\item READ: waits to encode the next word
+\item WRITE: accepts the candidate and emits it as the prediction
+\end{itemize}
+\item \textbf{Policy: } a stochastic policy $\pi_{\theta}$ parameterized by a recurrent neural network
+\begin{equation*}
+\centering
+\begin{aligned}
+&s_t = f_\theta (s_{t-1}, o_t),  \\
+&\pi_\theta (a_t | a_{<t}, o_{\leq t} ) \propto g_\theta (s_t)
+\end{aligned}
+\end{equation*}
+\end{itemize}
+}
+
+\frame{
+\textbf{Reward Function} \\
+At each step the agent will receive a reward signal $r_t$ based on ($o_t$, $a_t$).
+\begin{itemize}
+\item \textbf{Quality $ r_t^Q $}
+= smoothed BLEU
+\item \textbf{Delay $ r_t^D $}
+\begin{enumerate}
+\item \textbf{Average Proportion}
+\item \textbf{Consecutive Wait Length}
+\end{enumerate}
+\end{itemize}
+
+The total reward will be computed as:
+$$r_t = r_t^Q + r_t^D$$
+}
+
+%\frame{
+%\centering
+%\includegraphics[scale=0.33]{./images/PG}
+%}
+
+\frame{
+\textbf{Results}
+\vspace{1cm}
+
+\begin{columns}
+\column{0.5\textwidth}
+\centering
+\includegraphics[scale=0.28]{./images/DEEN}
+\column{0.5\textwidth}
+\centering
+\includegraphics[scale=0.28]{./images/ENDE}
+\end{columns}
+
+\vspace{1cm}
+\centering
+\includegraphics[scale=0.3]{./images/GUIDE}
+
+}
+
+\frame{
+\textbf{Discussion}
+\begin{enumerate}
+\item We have full control over balancing the trade-off between Quality and Delay.
+\item Still not very good scores on quality of translation 
+\item Cannot perform well on translating from SVO languages like EN to SOV languages like DE.
+\end{enumerate}
+}
+
+\frame{
+\textbf{Future Direction}
+\begin{itemize}
+    \item Finding a way to have uniform model for SNMT
+    \item Lots of solved problems from statistical approaches are still unsolved in this framework:
+    \begin{itemize}
+        \item Paraphrasing
+        \item prediction
+        \item ...
+    \end{itemize}
+    \item Applying ensembles are still challenging in this field. 
+\end{itemize}
+}
+%===================================================================================
+
+%\section{prediction}
+%\frame{
+%\begin{center}
+%\Huge Prediction
+%\end{center}
+%}
+
+%\subsection{Importance of prediction}
+%\frame{
+%\frametitle{Importance of prediction}
+%\begin{itemize}
+%    \item Translation in real-time from Subject-Object-Verb (SOV) languages like Germany to Subject-Verb-Object (SVO) languages like English would be impossible without prediction.
+%\end{itemize}
+%\vfill
+%\centering
+%\includegraphics[scale=0.3]{./images/SOV-SVO}
+%}
+
+%\subsection{Our Idea}
+%\frame{
+%\frametitle{Our Method}
+%\textbf{Our Method}
+%\begin{itemize}
+%    \item Our idea is to have another action called "Predict".
+%    \item It will predict one word at a time.
+%    \item If the agent chooses "predict", then our predictor will generate a word as input.
+%    \item Our predictor is a pre-trained multi-layer LSTM network for word-level language models.
+%\end{itemize}
+%}
+
+%\frame{
+%\textbf{Structure of the Network}
+%\centering
+%\includegraphics[scale=0.36]{./images/Predicted.png}
+%}
+
+
+%===================================================================================
+\section*{}
+
+%\begin{frame}
+%\textbf{References in here}
+%\end{frame}
+
+\begin{frame}
+\textbf{References}
+\vspace{5mm}
+\nocite{*}
+\bibliographystyle{unsrt}
+\footnotesize
+\bibliography{./Reference}
+\end{frame}
+
+\begin{frame}[c]
+\begin{center}
+\Huge Thank You !
+\end{center}
+\end{frame}
+
+%===================================================================================
+%\frame{
+%\frametitle{Sample Frame Title No. 3}
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+%\begin{block}{Something important}
+%Einstein's formula
+%$$E=mc^2$$
+%\end{block}
+%}
+
+%\frame{
+%\frametitle{Sample Frame Title No. 2}
+%\begin{itemize}
+%\item First item
+%\item Second item
+%\item Third item
+%\end{itemize}
+%}
+
+%\frametitle{Sample Frame Title No. 1}
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+%}
+
+%\subsection{Sample subsection}
+
+
+\end{document}
