@@ -479,7 +479,9 @@
 \RequirePackage[titletoc]{appendix}
 \renewcommand{\contentsname}{Table of Contents}
 
-\newcommand{\addtoToC}[1]{\addcontentsline{toc}{chapter}{#1}}
+%\newcommand{\addtoToC}[1]{\addcontents{toc}{\setcounter{tocdepth}{1}}}
+
+\newcommand{\addtoToC}[1]{\addcontentsline{toc}{chapter}{#1}{\setcounter{tocdepth}{1}}}
 
 \renewcommand{\cfttabpresnum}{Table\ }
 \renewcommand{\cfttabnumwidth}{0.75in}
